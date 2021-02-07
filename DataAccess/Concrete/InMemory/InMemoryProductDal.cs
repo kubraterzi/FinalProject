@@ -1,8 +1,10 @@
 ﻿using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace DataAccess.Concrete.InMemory
@@ -29,30 +31,33 @@ namespace DataAccess.Concrete.InMemory
 
         public void Delete(Product product)
         {
-            //Product productToDelete=null;
-            //foreach (var p in _products)
-            //{
-            //    if (p.ProductID == product.ProductID)
-            //    {
-            //        productToDelete = p;
-            //    }
-            //}
-
-            //_products.Remove(productToDelete);
-
             Product productToDelete = _products.SingleOrDefault(p=> p.ProductID == product.ProductID);
             _products.Remove(productToDelete);
-
         }
 
-        public List<Product> GetAll()
+        public Product Get(Func<Product, bool> filter)
         {
-            return _products;
+            return _products.SingleOrDefault(filter);
+        }
+
+        public List<Product> GetAll(Func<Product, bool> filter = null)
+        {
+            return filter == null ? _products.ToList() : _products.Where(filter).ToList();
         }
 
         public List<Product> GetAllByCategoryId(int categoryID)
         {
             return _products.Where(p=> p.CategoryID == categoryID).ToList();
+        }
+
+        public List<Product> GetAllByUnitPrice(decimal min, decimal max)
+        {
+            return _products.Where(p=> p.UnitPrice >= min && p.UnitPrice<= max).ToList();
+        }
+
+        public List<ProductDetailDto> GetProductDetails()
+        {
+            throw new NotImplementedException();
         }
 
         public void Update(Product product)

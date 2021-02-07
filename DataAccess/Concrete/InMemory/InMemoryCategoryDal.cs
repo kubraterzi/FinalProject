@@ -3,6 +3,7 @@ using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace DataAccess.Concrete.InMemory
@@ -32,9 +33,14 @@ namespace DataAccess.Concrete.InMemory
             _categories.Remove(categoryToDelete);
         }
 
-        public List<Category> GetAll()
+        public Category Get(Func<Category, bool> filter)
         {
-            return _categories;
+            return  _categories.SingleOrDefault(filter);
+        }
+
+        public List<Category> GetAll(Func<Category, bool> filter = null)
+        {
+            return filter == null ? _categories.ToList() : _categories.Where(filter).ToList();
         }
 
         public void Update(Category category)
@@ -44,5 +50,6 @@ namespace DataAccess.Concrete.InMemory
             categoryToUpdate.CategoryID = category.CategoryID;
             categoryToUpdate.CategoryName = category.CategoryName;
         }
+
     }
 }
