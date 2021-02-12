@@ -18,6 +18,17 @@ namespace Business.Concrete
             _orderDal = orderDal;
         }
 
+
+        public IDataResult<List<Order>> GetAll()
+        {
+            return new SuccessDataResult<List<Order>>(_orderDal.GetAll(), Messages.Listed);
+        }
+
+        public IDataResult<List<Order>> GetAllByCustomerID(string customerId)
+        {
+           return  new SuccessDataResult<List<Order>>(_orderDal.GetAll(o=> o.CustomerID == customerId));
+        }
+        
         public IResult Add(Order order)
         {
             _orderDal.Add(order);
@@ -30,16 +41,6 @@ namespace Business.Concrete
             return new SuccessResult(Messages.Deleted);
         }
 
-        public IDataResult<List<Order>> GetAll()
-        {
-            return new SuccessDataResult<List<Order>>(_orderDal.GetAll(), Messages.Listed);
-        }
-
-        public IDataResult<List<Order>> GetAllByCustomerID(string customerId)
-        {
-           return  new SuccessDataResult<List<Order>>(_orderDal.GetAll(o=> o.CustomerID == customerId));
-        }
-        
         public IResult Update(Order order)
         {
             _orderDal.Update(order);

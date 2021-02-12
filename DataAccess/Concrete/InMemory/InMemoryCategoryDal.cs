@@ -11,6 +11,7 @@ namespace DataAccess.Concrete.InMemory
     public class InMemoryCategoryDal : ICategoryDal
     {
         List<Category> _categories;
+
         public InMemoryCategoryDal()
         {
             _categories = new List<Category>

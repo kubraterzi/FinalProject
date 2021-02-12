@@ -19,27 +19,6 @@ namespace Business.Concrete
             _productDal = productDal;
         }
 
-        public IResult Add(Product product)
-        {
-            if (product.ProductName.Length < 2)
-            {
-                return new ErrorResult(Messages.NameInvalid);
-            }
-            else
-            {
-                _productDal.Add(product);
-                return new SuccessResult(Messages.Added);
-
-            }
-
-        }
-
-        public IResult Delete(Product product)
-        {
-            _productDal.Delete(product);
-            return new SuccessResult(Messages.Deleted); // Boş daha geçilebilirdi, hiçbir mesaj döndürmez, yalnızca bool dönüşünü verirdi.  - return new SuccessResult(); -
-        }
-
         public IDataResult<List<Product>> GetAll()
         {
                 return new SuccessDataResult<List<Product>>(_productDal.GetAll());
@@ -76,10 +55,32 @@ namespace Business.Concrete
             }
         }
 
+        public IResult Add(Product product)
+        {
+            if (product.ProductName.Length < 2)
+            {
+                return new ErrorResult(Messages.NameInvalid);
+            }
+            else
+            {
+                _productDal.Add(product);
+                return new SuccessResult(Messages.Added);
+
+            }
+
+        }
+
+        public IResult Delete(Product product)
+        {
+            _productDal.Delete(product);
+            return new SuccessResult(Messages.Deleted); // Boş daha geçilebilirdi, hiçbir mesaj döndürmez, yalnızca bool dönüşünü verirdi.  - return new SuccessResult(); -
+        }
+
         public IResult Update(Product product)
         {
             _productDal.Update(product);
             return new SuccessResult(); // İstersek mesaj ya da başarı durumunu da listeleyebilirdik. -  return new SuccessResult(Messages.Deleted);  -
         }
+
     }
 }
