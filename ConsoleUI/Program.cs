@@ -50,7 +50,7 @@ namespace ConsoleUI
         private static void ProductTest()
         {
             ProductManager productManager = new ProductManager(new EfProductDal());
-           
+
 
             //var result = productManager.Add(new Product { ProductName = "Sandwich", CategoryID = 3, UnitPrice = 13, UnitsInStock = 50 });
             //Console.WriteLine(result.Message);
@@ -58,20 +58,20 @@ namespace ConsoleUI
             //var result = productManager.GetAll();
             //Console.WriteLine(result.Message);
 
-            var result = productManager.GetProductDetails();
-            if (result.SuccessStatus== true)
-            {
-                foreach (var product in productManager.GetProductDetails().Data)
-                {
-                    Console.WriteLine(product.ProductName + " / " + product.CategoryName);
-                }
-            }
-            else
-            {
-                Console.WriteLine(result.Message);
-            }
+            //var result = productManager.GetProductDetails();
+            //if (result.SuccessStatus== true)
+            //{
+            //    foreach (var product in productManager.GetProductDetails().Data)
+            //    {
+            //        Console.WriteLine(product.ProductName + " / " + product.CategoryName);
+            //    }
+            //}
+            //else
+            //{
+            //    Console.WriteLine(result.Message);
+            //}
 
-
+            productManager.Add(new Product { ProductName= "aaa", CategoryID=3, UnitPrice=100, UnitsInStock=10 });
 
         }
     }

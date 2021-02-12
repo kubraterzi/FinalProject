@@ -18,6 +18,12 @@ namespace Business.Concrete
             _customerDal = customerDal;
         }
 
+
+        public IDataResult<List<Customer>> GetAll()
+        {
+            return new SuccessDataResult<List<Customer>>(_customerDal.GetAll(), Messages.Listed);
+        }
+
         public IResult Add(Customer customer)
         {
             _customerDal.Add(customer);
@@ -28,11 +34,6 @@ namespace Business.Concrete
         {
             _customerDal.Delete(customer);
             return new SuccessResult(Messages.Deleted);
-        }
-
-        public IDataResult<List<Customer>> GetAll()
-        {
-            return new SuccessDataResult<List<Customer>>(_customerDal.GetAll(), Messages.Listed);
         }
 
         public IResult Update(Customer customer)

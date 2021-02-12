@@ -13,6 +13,7 @@ namespace Business.Abstract
         IDataResult<List<Product>> GetAllByUnitPrice(decimal min, decimal max);
         IDataResult<List<ProductDetailDto>> GetProductDetails();
         IDataResult<List<Product>> GetAll(); // Seçilecek olan veritabanı türü içerisindeki GetAll() metodunu çağırmak için, ProductManager içerisinde implement edilmek üzere bir GetAll() metodu yazıyoruz.
+        IDataResult<Product> GetById(int productId);
         IResult Add(Product product);
         IResult Update(Product product);
         IResult Delete(Product product);

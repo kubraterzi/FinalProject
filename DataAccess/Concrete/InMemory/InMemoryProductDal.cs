@@ -12,6 +12,7 @@ namespace DataAccess.Concrete.InMemory
     public class InMemoryProductDal : IProductDal
     {
         List<Product> _products;
+
         public InMemoryProductDal()
         {
             _products = new List<Product>
@@ -24,6 +25,7 @@ namespace DataAccess.Concrete.InMemory
                 new Product{ProductID =6, CategoryID=6, ProductName="Pavlou", UnitsInStock= 13, UnitPrice=17}
             };
         }
+
         public void Add(Product product)
         {
             _products.Add(product);

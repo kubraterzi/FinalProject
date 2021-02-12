@@ -18,6 +18,11 @@ namespace Business.Concrete
             _categoryDal = categoryDal;
         }
 
+        public IDataResult<List<Category>> GetAll()
+        {
+            return new SuccessDataResult<List<Category>>(_categoryDal.GetAll()); // İstersek listelendi mesajı yazabiliriz. -   return new SuccessDataResult<List<Category>>(_categoryDal.GetAll(), Messages.Listed); -
+        }
+
         public IResult Add(Category category)
         {
             if (category.CategoryName.Length <= 5)
@@ -35,11 +40,6 @@ namespace Business.Concrete
         {
             _categoryDal.Delete(category);
             return new SuccessResult(Messages.Deleted);
-        }
-
-        public IDataResult<List<Category>> GetAll()
-        {
-            return new SuccessDataResult<List<Category>>(_categoryDal.GetAll()); // İstersek listelendi mesajı yazabiliriz. -   return new SuccessDataResult<List<Category>>(_categoryDal.GetAll(), Messages.Listed); -
         }
 
         public IResult Update(Category category)
