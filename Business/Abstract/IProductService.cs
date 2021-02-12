@@ -1,4 +1,5 @@
-﻿using Entities.Concrete;
+﻿using Core.Utilities.Results;
+using Entities.Concrete;
 using Entities.DTOs;
 using System;
 using System.Collections.Generic;
@@ -8,9 +9,12 @@ namespace Business.Abstract
 {
     public interface IProductService
     {
-        List<Product> GetAllByCategoryID(int brandId);
-        List<Product> GetAllByUnitPrice(decimal min, decimal max);
-        List<ProductDetailDto> GetProductDetails();
-        List<Product> GetAll(); // Seçilecek olan veritabanı türü içerisindeki GetAll() metodunu çağırmak için, ProductManager içerisinde implement edilmek üzere bir GetAll() metodu yazıyoruz.
+        IDataResult<List<Product>> GetAllByCategoryID(int brandId);
+        IDataResult<List<Product>> GetAllByUnitPrice(decimal min, decimal max);
+        IDataResult<List<ProductDetailDto>> GetProductDetails();
+        IDataResult<List<Product>> GetAll(); // Seçilecek olan veritabanı türü içerisindeki GetAll() metodunu çağırmak için, ProductManager içerisinde implement edilmek üzere bir GetAll() metodu yazıyoruz.
+        IResult Add(Product product);
+        IResult Update(Product product);
+        IResult Delete(Product product);
     }
 }

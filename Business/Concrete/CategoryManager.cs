@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Core.Constants;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using System;
@@ -16,9 +18,34 @@ namespace Business.Concrete
             _categoryDal = categoryDal;
         }
 
-        public List<Category> GetAll()
+        public IResult Add(Category category)
         {
-            return _categoryDal.GetAll();
+            if (category.CategoryName.Length <= 5)
+            {
+                return new ErrorResult(Messages.NameInvalid);
+            }
+            else
+            {
+                _categoryDal.Add(category);
+                return new SuccessResult(Messages.Added);
+            }
+        }
+
+        public IResult Delete(Category category)
+        {
+            _categoryDal.Delete(category);
+            return new SuccessResult(Messages.Deleted);
+        }
+
+        public IDataResult<List<Category>> GetAll()
+        {
+            return new SuccessDataResult<List<Category>>(_categoryDal.GetAll()); // İstersek listelendi mesajı yazabiliriz. -   return new SuccessDataResult<List<Category>>(_categoryDal.GetAll(), Messages.Listed); -
+        }
+
+        public IResult Update(Category category)
+        {
+            _categoryDal.Update(category);
+            return new SuccessResult(Messages.Updated);
         }
     }
 }
