@@ -6,6 +6,8 @@ using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 
 namespace Business.Concrete
 {
@@ -28,7 +30,13 @@ namespace Business.Concrete
         {
            return  new SuccessDataResult<List<Order>>(_orderDal.GetAll(o=> o.CustomerID == customerId));
         }
+
+        public IDataResult<Order> GetById(int orderId)
+        {
+            return new SuccessDataResult<Order>(_orderDal.Get(o => o.OrderID == orderId), Messages.Listed);
+        }
         
+        [ValidationAspect(typeof(OrderValidator), Priority = 1)]
         public IResult Add(Order order)
         {
             _orderDal.Add(order);
