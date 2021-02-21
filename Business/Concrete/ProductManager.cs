@@ -7,6 +7,8 @@ using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 
 namespace Business.Concrete
 {
@@ -19,18 +21,16 @@ namespace Business.Concrete
             _productDal = productDal;
         }
 
+        public IDataResult<Product> GetById(int productId)
+        {
+            return new SuccessDataResult<Product>(_productDal.Get(x => x.ProductID == productId), Messages.Listed);
+        }
+
+        [ValidationAspect(typeof(ProductValidator), Priority = 1)]
         public IResult Add(Product product)
         {
-            if (product.ProductName.Length < 2)
-            {
-                return new ErrorResult(Messages.NameInvalid);
-            }
-            else
-            {
                 _productDal.Add(product);
                 return new SuccessResult(Messages.Added);
-
-            }
 
         }
 
