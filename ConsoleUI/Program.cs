@@ -12,12 +12,6 @@ namespace ConsoleUI
         {
             ProductTest();
 
-            //CategoryTest();
-
-            //CustomerTest();
-
-            //OrderTest();
-
         }
 
         private static void OrderTest()
