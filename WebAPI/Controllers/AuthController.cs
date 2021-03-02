@@ -1,13 +1,60 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Business.Abstract;
+using Entities.DTOs;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
-    public class AuthController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+
+    public class AuthController : ControllerBase
     {
-        // GET
-        public IActionResult Index()
+
+        private IAuthService _authService;
+        public AuthController(IAuthService authService)
         {
-            return View();
+            _authService = authService;
         }
+
+        [HttpPost("login")]
+        public ActionResult Login(UserForLoginDto userForLoginDto)
+        {
+            var userToLogin = _authService.Login(userForLoginDto);
+            if (!userToLogin.SuccessStatus)
+            {
+                return BadRequest(userToLogin.Message);
+            }
+
+            var result = _authService.CreateAccessToken(userToLogin.Data);
+            if (result.SuccessStatus)
+            {
+                return Ok(result.Data);
+            }
+
+            return BadRequest(result.Message);
+        }
+
+        [HttpPost("register")]
+        public IActionResult Register(UserForRegisterDto userForRegisterDto) // Buradaki passwrod userForRegisterDto içerisinden de gelebilirdi
+        {
+            var userExists = _authService.UserExists(userForRegisterDto.Email); // kontrol ettin mi alabiliyor muyum?
+            if (!userExists.SuccessStatus) // register talebim başarısız olduysa
+            {
+                return BadRequest(userExists.Message);
+            }
+
+            var userToRegister = _authService.Register(userForRegisterDto);
+            var result = _authService.CreateAccessToken(userToRegister.Data);
+            if (result.SuccessStatus)
+            {
+                return Ok(result.Data);
+            }
+
+            return BadRequest(result.Message);
+
+        }
+
+        // userExists içersinde dto property leri haricinde register metodunun içerisinde hashlenen passwordSalt ve passwordHash de var.
     }
 }

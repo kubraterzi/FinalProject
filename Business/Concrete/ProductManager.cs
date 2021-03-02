@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Text;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
+using Business.BusinessAspects.Autofac;
 
 namespace Business.Concrete
 {
@@ -26,7 +27,8 @@ namespace Business.Concrete
             return new SuccessDataResult<Product>(_productDal.Get(x => x.ProductID == productId), Messages.Listed);
         }
 
-        [ValidationAspect(typeof(ProductValidator), Priority = 1)]
+        [ValidationAspect(typeof(ProductValidator))]
+        [SecuredOperation("admin, product.add")]
         public IResult Add(Product product)
         {
                 _productDal.Add(product);
