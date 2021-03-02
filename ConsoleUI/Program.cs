@@ -11,7 +11,6 @@ namespace ConsoleUI
         static void Main(string[] args)
         {
             ProductTest();
-
         }
 
         private static void OrderTest()

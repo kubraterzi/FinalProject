@@ -27,7 +27,7 @@ namespace Core.Utilities.Security.JWT
         
         
         
-        public AccesToken CreateToken(User user, List<OperationClaim> operationClaims)
+        public AccessToken CreateToken(User user, List<OperationClaim> operationClaims)
         {
             _accessTokenExpiration = DateTime.Now.AddMinutes(_tokenOptions.AccessTokenExpiration);// oturumun açık kalma süresini ayarlamak için, token üretildiği andan itibaren appsettings.json içerisinde belirtilen süreyi tanımladık.
             var securityKey = SecurityKeyHelper.CreateSecurityKey(_tokenOptions.SecurityKey); // güvenlik anahtarına ihtiyacım var -> createsecuritykey ile ürettik
@@ -37,7 +37,7 @@ namespace Core.Utilities.Security.JWT
             var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
             var token = jwtSecurityTokenHandler.WriteToken(jwt);
 
-            return new AccesToken
+            return new AccessToken
             {
                 Token = token,
                 Expiration = _accessTokenExpiration

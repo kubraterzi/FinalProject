@@ -6,6 +6,6 @@ namespace Core.Utilities.Security.JWT
     public interface ITokenHelper
     {
         // Girilen kullanıcı adı ve parola doğruysa, veritabanına giderek claimlerini bulacak ve jsonwebtoken üretecek.
-        AccesToken CreateToken(User user, List<OperationClaim> operationClaims);
+        AccessToken CreateToken(User user, List<OperationClaim> operationClaims);
     }
 }
