@@ -8,7 +8,7 @@ using Entities.DTOs;
 
 namespace Business.Concrete
 {
-    public class AuthManager :IAuthService
+    public class AuthManager : IAuthService
     {
         private IUserService _userService; //normalde manager larda kendi dal interface i enjekte edilir, farklı bir dal dan destek almak için service hizmeti(IXService) tanımlanmalıdır.
         private ITokenHelper _tokenHelper;
@@ -43,28 +43,28 @@ namespace Business.Concrete
         public IDataResult<User> Login(UserForLoginDto userForLoginDto)
         {
             var userToCheck = _userService.GetByEmail(userForLoginDto.Email);
-            if (userToCheck == null)
+            if (userToCheck.Data == null)
             {
                 return new ErrorDataResult<User>(AspectMessages.UserNotFound);
             }
 
-            if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password,userToCheck.Data.PasswordHash, userToCheck.Data.PasswordSalt))
+            if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password, userToCheck.Data.PasswordHash, userToCheck.Data.PasswordSalt))
             {
                 return new ErrorDataResult<User>(AspectMessages.PasswordError);
             }
 
-            return new SuccessDataResult<User>(AspectMessages.SuccessfulLogin);
+            return new SuccessDataResult<User>(userToCheck.Data, AspectMessages.SuccessfulLogin);
         }
 
         public IResult UserExists(string email)
         {
-            var result = _userService.GetByEmail(email).SuccessStatus; // eğer true döndüyse, ilgili mail adresi boşta, kullanılabilir
-            if (result)
+            var result = _userService.GetByEmail(email); // eğer true döndüyse, ilgili mail adresi boşta, kullanılabilir
+            if (result.Data == null)
             {
-               return new SuccessResult();
+                return new SuccessResult();
             }
             return new ErrorResult(AspectMessages.UserAlreadyExists);
-            
+
         }
 
         public IDataResult<AccessToken> CreateAccessToken(User user)
@@ -75,5 +75,5 @@ namespace Business.Concrete
 
         }
     }
-    
+
 }

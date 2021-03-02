@@ -26,12 +26,12 @@ namespace Business.BusinessAspects.Autofac
         {
             var roleClaims = _httpContextAccessor.HttpContext.User.ClaimRoles(); // _httpContextAccessor içerisindeki kullanıcının(yoğunluk anında
                                                                                  // her kulanıcı için birer httpcontextaccessor üretiliyordu.) rolleri çek
-                                                                                
+
             foreach (var role in _roles)
             {
                 if (roleClaims.Contains(role)) // çekilen roller içerisinde, _role dizisinin içerisindeki rollerden biri varsa
                 {
-                    return; // programı sürdür
+                    return;
                 }
             }
             throw new Exception(AspectMessages.AuthorizationDenied); // eğer o rol yokse hata gönder. (Yetkiniz yok.)

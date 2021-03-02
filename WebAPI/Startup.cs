@@ -69,9 +69,9 @@ namespace WebAPI
 
             app.UseRouting();
 
-            app.UseAuthentication();
+            app.UseAuthentication(); // yetki izinleri(etkileþimde bulunabilir miyim?)
 
-            app.UseAuthorization();
+            app.UseAuthorization(); // yetki sýnýrlandýrmalarý (Bulunacaðým etkileþimde sýnýrlarým nelerdir?
 
             app.UseEndpoints(endpoints =>
             {

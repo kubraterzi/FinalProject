@@ -18,7 +18,7 @@ namespace DataAccess.Concrete.EntityFramework
                     where userOperationClaim.UserId == user.Id
                     select new OperationClaim
                     {
-                        Id = userOperationClaim.OperationClaimId,
+                        Id = operationClaim.Id,
                         Name = operationClaim.Name
                     };
 

@@ -28,12 +28,7 @@ namespace Business.Concrete
 
         public IDataResult<User> GetByEmail(string email)
         {
-            var result = _userDal.Get(u => u.Email == email); //dışarıdan gelen email i veritabanında arat
-            if (result != null) // eğer arama sonucunda veri bulduysan, yani null değilse
-            {
-                return new ErrorDataResult<User>(result); // bu mail adresi daha önce kullanıldığı için alamayacağını bildir
-            }
-            return new SuccessDataResult<User>(result);
+            return new SuccessDataResult<User>(_userDal.Get(u => u.Email == email)); // eğer mailli user varsa dolu yoksa boş dönüyor
         }
     }
 }
