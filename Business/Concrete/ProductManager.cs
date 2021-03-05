@@ -10,6 +10,8 @@ using System.Text;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
 using Business.BusinessAspects.Autofac;
+using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Transaction;
 
 namespace Business.Concrete
 {
@@ -28,30 +30,36 @@ namespace Business.Concrete
         }
 
         [ValidationAspect(typeof(ProductValidator))]
-        [SecuredOperation("admin, product.add")]
+        [SecuredOperation("product.add")]
+        [CacheRemoveAspect("IProductService.Get")] // ekleme işlemi gerçekleştirdikten sonra, içerisinde Get bulunan tüm metotları cache den siler.
         public IResult Add(Product product)
         {
-                _productDal.Add(product);
-                return new SuccessResult(Messages.Added);
+            _productDal.Add(product);
+            return new SuccessResult(Messages.Added);
 
         }
 
+        [SecuredOperation("admin")]
+        [CacheRemoveAspect("IProductService.Get")]
         public IResult Delete(Product product)
         {
             _productDal.Delete(product);
             return new SuccessResult(Messages.Deleted); // Boş daha geçilebilirdi, hiçbir mesaj döndürmez, yalnızca bool dönüşünü verirdi.  - return new SuccessResult(); -
         }
 
+        [SecuredOperation("admin,product.list")]
         public IDataResult<List<Product>> GetAll()
         {
-                return new SuccessDataResult<List<Product>>(_productDal.GetAll());
+            return new SuccessDataResult<List<Product>>(_productDal.GetAll());
         }
 
+        [SecuredOperation("product.list")]
         public IDataResult<List<Product>> GetAllByCategoryID(int brandId)
         {
             return new SuccessDataResult<List<Product>>(_productDal.GetAll(p => p.CategoryID == brandId), Messages.Listed);
         }
 
+        [SecuredOperation("admin, product.list")]
         public IDataResult<List<Product>> GetAllByUnitPrice(decimal min, decimal max)
         {
             if (max <= 0 || min <= 0)
@@ -64,24 +72,27 @@ namespace Business.Concrete
             }
         }
 
+        [SecuredOperation("product.list")]
         public IDataResult<List<ProductDetailDto>> GetProductDetails()
         {
-
-            if (DateTime.Now.Hour == 03)
-            {
-                return new ErrorDataResult<List<ProductDetailDto>>(Messages.MaintenanceTime);
-            }
-
-            else
-            {
-                return new SuccessDataResult<List<ProductDetailDto>>(_productDal.GetProductDetails());
-            }
+            return new ErrorDataResult<List<ProductDetailDto>>(Messages.Listed);
         }
 
+        [SecuredOperation("admin")]
+        [ValidationAspect(typeof(ProductValidator))]
+        [CacheRemoveAspect("IProductService.Get")]
         public IResult Update(Product product)
         {
             _productDal.Update(product);
             return new SuccessResult(); // İstersek mesaj ya da başarı durumunu da listeleyebilirdik. -  return new SuccessResult(Messages.Deleted);  -
+        }
+
+        [TransactionScopeAspect]
+        public IResult TransactionalOperation(Product product)
+        {
+            _productDal.Update(product);
+            _productDal.Add(product);
+            return new SuccessResult(Messages.Updated);
         }
     }
 }

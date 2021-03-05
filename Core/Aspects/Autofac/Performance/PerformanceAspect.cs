@@ -1,0 +1,35 @@
+﻿using System.Diagnostics;
+using Castle.DynamicProxy;
+using Core.Utilities.Interceptors;
+using Core.Utilities.IoC;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace Core.Aspects.Autofac.Performance
+{
+    public class PerformanceAspect : MethodInterception
+    {
+        private int _internal; // Method başladıktan sonra bitene kadar geçen sürenin tamamı
+        private Stopwatch _stopwatch; // kronometre
+
+        public PerformanceAspect(int @internal)
+        {
+            _internal = @internal;
+            _stopwatch = ServiceTool.ServiceProvider.GetService<Stopwatch>();
+        }
+
+        protected override void OnBefore(IInvocation invocation)
+        {
+            _stopwatch.Start();
+        }
+
+        protected override void OnAfter(IInvocation invocation)
+        {
+            if (_stopwatch.Elapsed.Milliseconds > _internal)
+            {
+                Debug.WriteLine($"Perfomance : {invocation.Method.DeclaringType.Name}.{invocation.Method.Name}" +
+                                $"--> {_stopwatch.Elapsed.TotalSeconds}");
+            }
+            _stopwatch.Reset();
+        }
+    }
+}

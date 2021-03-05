@@ -43,7 +43,7 @@ namespace Business.Concrete
         public IDataResult<User> Login(UserForLoginDto userForLoginDto)
         {
             var userToCheck = _userService.GetByEmail(userForLoginDto.Email);
-            if (userToCheck.Data == null)
+            if (userToCheck.Data == null) // GetbyEmail metodunda her türlü success döndürdüğümüz için(if sorgusu kullanmadık) burada getirilen verinin boş olup olmadığını teyit ediyoruz.
             {
                 return new ErrorDataResult<User>(AspectMessages.UserNotFound);
             }

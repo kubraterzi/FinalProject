@@ -8,7 +8,8 @@ namespace Core.Utilities.Security.Encryption
         // Biz kendi  parola hash leme işlemimizi yaptık, ancak WebApi de aldığı token ı doğrulayabilmesi adına aynı yapıya ihtiyaç duyar. SigningCredentials bu sebeple oluşturulur.
         public static SigningCredentials CreateSigningCredentials(SecurityKey securityKey)
         {
-            return new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha512); // gelen security yi HmacSha512 algoritması ile doğruluyor.
+            var result= new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha512); // gelen security yi HmacSha512 algoritması ile doğruluyor.
+            return result; 
         }
         
         // burada bir token işlemi yürütülecek, bu işlemde kullanılacak anahtar -> securityKey, algoritma -> HmacSha512 dir.

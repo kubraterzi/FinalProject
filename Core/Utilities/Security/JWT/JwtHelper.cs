@@ -39,7 +39,7 @@ namespace Core.Utilities.Security.JWT
 
             return new AccessToken
             {
-                Token = token,
+                Token = token, // ilgili bilgilerle derlediği token ı Token property sine atar.
                 Expiration = _accessTokenExpiration
             };
         }
