@@ -24,10 +24,15 @@ namespace Business.Concrete
             _productDal = productDal;
         }
 
+
+        [CacheAspect]
         public IDataResult<Product> GetById(int productId)
         {
             return new SuccessDataResult<Product>(_productDal.Get(x => x.ProductID == productId), Messages.Listed);
         }
+
+
+
 
         [ValidationAspect(typeof(ProductValidator))]
         [SecuredOperation("product.add")]
@@ -39,6 +44,9 @@ namespace Business.Concrete
 
         }
 
+
+
+
         [SecuredOperation("admin")]
         [CacheRemoveAspect("IProductService.Get")]
         public IResult Delete(Product product)
@@ -47,18 +55,29 @@ namespace Business.Concrete
             return new SuccessResult(Messages.Deleted); // Boş daha geçilebilirdi, hiçbir mesaj döndürmez, yalnızca bool dönüşünü verirdi.  - return new SuccessResult(); -
         }
 
+
+
+
         [SecuredOperation("admin,product.list")]
         public IDataResult<List<Product>> GetAll()
         {
             return new SuccessDataResult<List<Product>>(_productDal.GetAll());
         }
 
+
+
+
+        [CacheAspect]
         [SecuredOperation("product.list")]
         public IDataResult<List<Product>> GetAllByCategoryID(int brandId)
         {
             return new SuccessDataResult<List<Product>>(_productDal.GetAll(p => p.CategoryID == brandId), Messages.Listed);
         }
 
+
+
+
+        [CacheAspect]
         [SecuredOperation("admin, product.list")]
         public IDataResult<List<Product>> GetAllByUnitPrice(decimal min, decimal max)
         {
@@ -72,11 +91,18 @@ namespace Business.Concrete
             }
         }
 
+
+
+
+        [CacheAspect]
         [SecuredOperation("product.list")]
         public IDataResult<List<ProductDetailDto>> GetProductDetails()
         {
             return new ErrorDataResult<List<ProductDetailDto>>(Messages.Listed);
         }
+
+
+
 
         [SecuredOperation("admin")]
         [ValidationAspect(typeof(ProductValidator))]
@@ -86,6 +112,9 @@ namespace Business.Concrete
             _productDal.Update(product);
             return new SuccessResult(); // İstersek mesaj ya da başarı durumunu da listeleyebilirdik. -  return new SuccessResult(Messages.Deleted);  -
         }
+
+
+
 
         [TransactionScopeAspect]
         public IResult TransactionalOperation(Product product)

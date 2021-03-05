@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Core.Aspects.Autofac.Caching;
 using Core.Constants;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
@@ -18,11 +19,18 @@ namespace Business.Concrete
             _categoryDal = categoryDal;
         }
 
+
+
+        [CacheAspect]
         public IDataResult<List<Category>> GetAll()
         {
             return new SuccessDataResult<List<Category>>(_categoryDal.GetAll()); // İstersek listelendi mesajı yazabiliriz. -   return new SuccessDataResult<List<Category>>(_categoryDal.GetAll(), Messages.Listed); -
         }
 
+
+
+
+        [CacheRemoveAspect("ICategoryService.Get")]
         public IResult Add(Category category)
         {
             if (category.CategoryName.Length <= 5)
@@ -36,12 +44,20 @@ namespace Business.Concrete
             }
         }
 
+
+
+
+        [CacheRemoveAspect("ICategoryService.Get")]
         public IResult Delete(Category category)
         {
             _categoryDal.Delete(category);
             return new SuccessResult(Messages.Deleted);
         }
 
+
+
+
+        [CacheRemoveAspect("ICategoryService.Get")]
         public IResult Update(Category category)
         {
             _categoryDal.Update(category);

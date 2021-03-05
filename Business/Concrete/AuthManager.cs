@@ -40,6 +40,8 @@ namespace Business.Concrete
 
         }
 
+
+
         public IDataResult<User> Login(UserForLoginDto userForLoginDto)
         {
             var userToCheck = _userService.GetByEmail(userForLoginDto.Email);
@@ -56,6 +58,9 @@ namespace Business.Concrete
             return new SuccessDataResult<User>(userToCheck.Data, AspectMessages.SuccessfulLogin);
         }
 
+
+
+
         public IResult UserExists(string email)
         {
             var result = _userService.GetByEmail(email); // eğer true döndüyse, ilgili mail adresi boşta, kullanılabilir
@@ -66,6 +71,9 @@ namespace Business.Concrete
             return new ErrorResult(AspectMessages.UserAlreadyExists);
 
         }
+
+
+
 
         public IDataResult<AccessToken> CreateAccessToken(User user)
         {
