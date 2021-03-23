@@ -67,11 +67,11 @@ namespace Business.Concrete
 
 
 
-        [CacheAspect]
-        [SecuredOperation("product.list")]
-        public IDataResult<List<Product>> GetAllByCategoryID(int brandId)
+        //[CacheAspect]
+        //[SecuredOperation("product.list")]
+        public IDataResult<List<Product>> GetAllByCategoryID(int categoryId)
         {
-            return new SuccessDataResult<List<Product>>(_productDal.GetAll(p => p.CategoryID == brandId), Messages.Listed);
+            return new SuccessDataResult<List<Product>>(_productDal.GetAll(p => p.CategoryID == categoryId), Messages.Listed);
         }
 
 

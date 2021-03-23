@@ -38,6 +38,8 @@ namespace Business.DependencyResolvers.Autofac
 
             builder.RegisterType<HttpContextAccessor>().As<IHttpContextAccessor>().SingleInstance();
 
+
+            // eğer aspect ler çalışmıyorsa, aşağıdaki satırlar eksiktir.
             var assembly = Assembly.GetExecutingAssembly(); //Mevcut assembly ye ulaş
             builder.RegisterAssemblyTypes(assembly).AsImplementedInterfaces() // assembly içerisindeki tüm tipleri kaydet
                 .EnableInterfaceInterceptors(new ProxyGenerationOptions() 
