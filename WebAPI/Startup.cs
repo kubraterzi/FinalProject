@@ -57,7 +57,7 @@ namespace WebAPI
                     };
                 });
 
-            services.AddDependencyResolvers(new ICoreModule[] // extensions ile sistem injectionlarýna ulaþtýk, yazdýðýmýz metotla ICoreModule den implement edilen bir çok modülü ekleyebileceðiz.  
+            services.AddDependencyResolvers(new ICoreModule[] // extensions ile sistem injectionlarï¿½na ulaï¿½tï¿½k, yazdï¿½ï¿½ï¿½mï¿½z metotla ICoreModule den implement edilen bir ï¿½ok modï¿½lï¿½ ekleyebileceï¿½iz.  
             { 
                 new CoreModule() 
             });
@@ -71,15 +71,17 @@ namespace WebAPI
                 app.UseDeveloperExceptionPage();
             }
 
+            app.ConfigureCustomExceptionMiddleware();
+            
             app.UseCors(builder => builder.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyOrigin());
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
-            app.UseAuthentication(); // yetki izinleri(etkileþimde bulunabilir miyim?)
+            app.UseAuthentication(); // yetki izinleri(etkileï¿½imde bulunabilir miyim?)
 
-            app.UseAuthorization(); // yetki sýnýrlandýrmalarý (Bulunacaðým etkileþimde sýnýrlarým nelerdir?
+            app.UseAuthorization(); // yetki sï¿½nï¿½rlandï¿½rmalarï¿½ (Bulunacaï¿½ï¿½m etkileï¿½imde sï¿½nï¿½rlarï¿½m nelerdir?
 
             app.UseEndpoints(endpoints =>
             {

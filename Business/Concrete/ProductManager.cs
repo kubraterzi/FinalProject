@@ -35,8 +35,8 @@ namespace Business.Concrete
 
 
         [ValidationAspect(typeof(ProductValidator))]
-        [SecuredOperation("product.add")]
-        [CacheRemoveAspect("IProductService.Get")] // ekleme işlemi gerçekleştirdikten sonra, içerisinde Get bulunan tüm metotları cache den siler.
+        //[SecuredOperation("product.add")]
+        //[CacheRemoveAspect("IProductService.Get")] // ekleme işlemi gerçekleştirdikten sonra, içerisinde Get bulunan tüm metotları cache den siler.
         public IResult Add(Product product)
         {
             _productDal.Add(product);
